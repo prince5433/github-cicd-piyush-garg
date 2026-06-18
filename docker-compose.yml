@@ -1,0 +1,10 @@
+# docker-compose.yaml
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    restart: unless-stopped      # Crash pe auto-restart!
+    ports:
+      - "8080:8080"             # host:container port mapping
