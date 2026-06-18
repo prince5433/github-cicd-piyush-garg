@@ -446,3 +446,30 @@ SSH Keys:
 
 *Notes by: Chai aur Code Series — GitHub Actions CI/CD*
 *Stack: Node.js + Express + Docker + GitHub Actions + VPS*
+
+---
+
+## 📝 Prince's AWS EC2 CI/CD Checklist (Important Notes)
+
+### 🖥️ Server Details (AWS EC2)
+* **Instance Public IP:** `13.60.168.80`
+* **OS / Username:** Ubuntu (`ubuntu`)
+* **Security Group Inbound Rule:** Port `8080` (Custom TCP) open to `0.0.0.0/0` (Anywhere) for users to access the API.
+
+### 🔑 SSH Connect Commands (Local PC to EC2)
+चूँकि हमने `authorized_keys` में अपनी नई SSH Key (`github_actions_key`) डाल दी है, अब आप अपने Windows PowerShell से सीधे इस कमांड से कनेक्ट कर सकते हैं:
+```powershell
+ssh -i "C:\Users\Prince\.ssh\github_actions_key" ubuntu@13.60.168.80
+```
+*(पुरानी `.pem` फ़ाइल अब काम नहीं करेगी क्योंकि हमने server से उसका reference हटा दिया है - सुरक्षा के लिए यह बहुत बढ़िया है!)*
+
+### 🔒 GitHub Secrets Configured
+GitHub settings में ये Secrets हमेशा सही होने चाहिए:
+* `SSH_HOST` = `13.60.168.80`
+* `SSH_KEY` = (Private key `github_actions_key` का पूरा कंटेंट)
+
+### ⚙️ EC2 Commands Cheat-sheet (Server के अंदर)
+* **Check if app is running:** `docker ps`
+* **Check live container logs:** `docker logs api`
+* **Restart app manually:** `docker compose up -d --build` (in `~/github-cicd-piyush-garg` folder)
+* **Install Docker Compose V2 if missing:** `sudo apt-get install docker-compose-v2 -y`
