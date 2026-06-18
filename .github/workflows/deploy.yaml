@@ -1,0 +1,27 @@
+name: Deploy Node.js Application to Hostinger
+
+on:
+  push:
+    branches:
+      - main              # Sirf main branch push pe trigger ho
+
+jobs:
+  deployer:
+    runs-on: ubuntu-latest    # GitHub ka runner server
+
+    steps:
+      # Step 1: Code checkout karo (GitHub ka built-in action)
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: SSH karke server pe deploy karo
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}         # Server IP
+          username: ubuntu                        # SSH username (AWS default is ubuntu)
+          key: ${{ secrets.SSH_KEY }}            # Private SSH key
+          script: |
+            cd ~/github-cicd-piyush-garg
+            git pull
+            docker compose up -d --build
